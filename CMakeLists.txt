@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 
+project(PluginCollider VERSION 0.1.0 LANGUAGES C CXX)
+
 # The top-level CMakeLists.txt file for a project must contain a literal, direct call to the
 # `project()` command. `project()` sets up some helpful variables that describe source/binary
 # directories, and the current project version. This is a standard CMake command.
@@ -89,7 +91,6 @@ if (NOT Boost_FOUND)
 	file(GLOB boost_filesystem_sources ${SC_DIR}/external_libraries/boost/libs/filesystem/src/*cpp)
 endif()
 
-project(PluginCollider VERSION 0.1.0)
 
 # If you've installed JUCE somehow (via a package manager, or directly using the CMake install
 # target), you'll need to tell this project that it depends on the installed copy of JUCE. If you've
@@ -229,6 +230,8 @@ target_compile_definitions(PluginCollider
 # linked automatically. If we'd generated a binary data target above, we would need to link to it
 # here too. This is a standard CMake command.
 
+message(sndfile: ${SNDFILE_LIBRARIES})
+
 target_link_libraries(PluginCollider
     PRIVATE
         # AudioPluginData           # If we'd created a binary data target, we'd link to it here
@@ -238,6 +241,4 @@ target_link_libraries(PluginCollider
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
 		${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
-		${SNDFILE_LIBRARIES}
-	    sndfile
-		)
+		${SNDFILE_LIBRARIES})
