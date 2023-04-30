@@ -29,7 +29,7 @@
 const int kDefaultPortNumber = 9989;
 const int kDefaultBlockSize = 64;
 const int kDefaultBeatDiv = 1;
-const int kDefaultNumWireBufs = 64;
+const int kDefaultNumWireBufs = 256;
 const int kDefaultRtMemorySize = 8192;
 
 #ifdef __APPLE__
@@ -132,9 +132,11 @@ void SCProcess::setup(float sampleRate, int buffSize, int numInputs,
     options.mNumOutputBusChannels = numOutputs;
     options.mVerbosity = 2;
 
-    setenv("SC_PLUGIN_PATH", DEFAULT_PLUGIN_PATH.getFullPathName().toRawUTF8(),
-           1);
-    // setenv("SC_SYNTHDEF_PATH", synthdefsPath.c_str(), 1);
+    std::string pluginPath = DEFAULT_PLUGIN_PATH.getFullPathName().toStdString();
+    pluginPath += ":" + std::string("/Users/mb/Library/Application Support/SuperCollider/Extensions");
+
+    setenv("SC_PLUGIN_PATH", pluginPath.c_str(), 1);
+    setenv("SC_SYNTHDEF_PATH", "/Users/mb/Library/Application Support/SuperCollider/synthdefs", 1);
 
     world = World_New(&options);
     world->mDumpOSC = 2;
